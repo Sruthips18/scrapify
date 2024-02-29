@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+{%load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <title>Profile Details</title>
+</head>
+<style>
+  body{
+    background-color: white;
+  }
+    .section .navbar{
+      background-color:rgb(237, 219, 131);
+      height: 90px;
+    }
+     .image{
+      position: relative;
+      margin-left: 200px;
+      bottom: 20px;
+     }
+     .container-main{
+      border: 2px solid black;
+      width: 50%;
+     }
+     body{
+  background: #f2f2f2;
+  font-family: 'Open Sans', sans-serif;
+}
+.container-head{
+  background-color: #83a3db;
+  height: 270px;
+}
+.card {
+      padding: 10px;
+      margin: 15px;
+    }
+</style>
+<body>
+  
+        <!-- profile details starts -->
+        <div class="container container-head main mt-3 ">
+          <div class="row">
+             <div class="col-4"> 
+               <div class="image mt-5">
+                  {%if data.profile_pic%}
+                          <img class="" src="{{data.profile_pic.url}}" alt="Avatar" height="200px" width="200px"
+                           style="background-color: rgb(68, 68, 68);">
+                          {%else%}
+                          <img class="" src="{%static 'scrapapp/images/profilepic.png'%}" alt="Avatar" height="200px" width="200px">
+                         {%endif%}
+               </div>
+             </div>
+             <div class="col-8 mt-4">
+                  <div class="media"><h3>My Profile</h3></div>
+                  <div class="media">
+                      <label for="">Name : {{request.user}}</label>
+                  </div>
+                  <div class="media">
+                      <label for="">Phone : {{data.phone}}</label>
+                  </div>
+                  <div class="media">
+                      <label for="">Address : {{data.address}}</label>
+                  </div>
+                  <div class="media mt-3">
+                      {%if data.user == request.user%}
+                      <a class="text-decoration-none btn btn-primary" href="{%url 'update-profile' data.id%}">Edit profile</a>
+                      {%endif%}
+                  </div>
+             </div>
+          </div>
+       </div>
+
+         <!-- profile ends ----------------------------------- -->
+
+         <!-- ----------scrap details section starts ------------------------ -->
+          <div class="container">
+                <div class="row mt-4">
+                  {%if user_items%}
+                  {%for item in user_items %}
+                    <div class="card custom-card" style="width: 16rem;">
+                      {%if item.picture%}
+                     <img src="{{item.picture.url}}" class="card-img-top" alt="..." height="180px"></a>
+                      {%endif%}
+                      <div class="card-body">
+                        <p class="card-text fw-bold">{{item.price}}$</p>
+                       <p class="card-text">{{item.name}}</p>
+                       <hr>
+                       <div>
+                        <a href="{%url 'scrap-update' item.id %}" class="btn btn-outline-primary mt-4">Edit</a>
+                        <a href="{%url 'scrap-remove' item.id %}" class="btn btn-outline-primary mt-4">Delete </a>
+                        <a href="{%url 'bid-request' item.id%}" class="btn btn-outline-primary mt-4">Bids </a>
+
+                    </div>
+                    </div>
+                  </div>
+                  {%endfor%}
+                  {%endif%}
+                  <div class="col-6"></div>
+                </div>
+             </div>
+ <!-- scrap section ends ------------------------------ -->
+      </div>
+   </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

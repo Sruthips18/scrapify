@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+{%load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>ScrapBox</title>
+</head>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lemon&display=swap');
+    .custom-card {
+      border: 1px solid #121111; /* Border style */
+      border-radius: 8px; /* Optional: Rounded corners */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Shadow */
+    }
+   
+body{
+  background: #f2f2f2;
+  font-family: 'Open Sans', sans-serif;
+}
+    .section .navbar{
+      /* background-color:rgb(237, 219, 131); */
+      background-color: #83a3db;
+      height: 90px;
+    }
+    .navbar .navbar-brand{
+      font-family: 'Lemon', serif;
+      color: chocolate;
+    }
+    .search-bar{
+      margin-right: 200px;
+      width: 100%;
+    }
+    .search-bar button{
+      color: white;
+      background-color: black;
+    }
+    .navbar-nav{
+      margin-right: 100px;
+    }
+    .cart a{
+      width: 100px;
+    }
+    .card {
+      padding: 10px;
+      margin: 15px;
+    }
+    .carousel-item{
+      height: 350px;
+    }
+
+</style>
+
+<body>
+
+  <!--  Navbar starting----------------------------- -->
+     <div class="section">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">
+              <img src="{%static 'scrapapp/images/logo.png'%}" alt="" height="50px" width="160px">
+              </a>
+            </div>
+              <div class="search-bar">
+                <form class="d-flex" role="search">
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn" type="submit">Search</button>
+                </form>
+              </div>
+              <div class="cart">
+                <a href="{% url 'wishlist_toggle' request.user.profile.id %}" class="btn"> <i class="fa-solid fa-cart-shopping fa-lg" data-toggle="tooltip" title="View Cart"></i>Cart</a>
+              </div>
+              <div></div>
+                <!-- profile dropdown start -->
+                  <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     {{request.user}}
+                        {%if request.user.profile.profile_pic%}
+                              <img class="profile-small profile-pic rounded-circle" src="{{request.user.profile.profile_pic.url}}"  alt="Avatar" height="35px" width="35px"
+                               style="background-color: rgb(68, 68, 68);">
+                            {%else%}
+                                <img src="{%static 'scrapapp/images/profilepic.png'%}" alt="" height="50px" width="35px" class="border rounded-circle">
+                        {%endif%}
+                      </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{%url 'profile-det' request.user.profile.id%}">Profile</a></li>
+                      <li><a class="dropdown-item" href="{%url 'scrap-add' %}">Scraps</a></li>
+                      <li><a class="dropdown-item" href="{%url 'bidslist'%}">Bids</a></li>
+                      <li><a class="dropdown-item" href="{%url 'sign-out'%}">Logout</a></li>
+                    </ul>
+                  </div>
+            <!-- profile dropdown end -->
+            </div>
+          </nav>
+     </div>
+         <!-- --------Nav bar ends here -------------------------------------------- -->
+        
+         {% if messages%}
+         {% for m in messages%}
+         {% if m.level == DEFAULT_MESSAGE_LEVELS.SUCCESS%}
+                 <div class="alert alert-success alert-dismissible fade show" role="alert">
+                     <strong>{{m}}</strong>
+                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                 </div>
+             {%endif%}
+             {%endfor%}
+             {%endif%}
+
+         <!-- carousel starting here -->
+      <div class="mt-3">
+        <div id="carouselExampleIndicators" class="carousel slide">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="{%static 'scrapapp/images/carousel-1.jpg'%}" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="{%static 'scrapapp/images/carousel-2.jpg'%}" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="{%static 'scrapapp/images/carousel-3.jpg'%}" class="d-block w-100" alt="...">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+
+         <!-- carousel ends here -->
+         
+         <!-- -------- Products card section starts here ------------------------ -->
+         <div class="container mt-3">
+            <div class="row">
+              {%for scraps in data %}
+              <div class="card custom-card" style="width: 13rem;">
+                {%if scraps.picture%}
+                 <a href="{%url 'scrap-detail' scraps.id%}"><img src="{{scraps.picture.url}}" class="card-img-top" alt="..." height="200px"></a>
+                {%endif%}
+                <hr>
+                <div class="card-body">
+                   <p class="card-text card-sec fw-bold">{{scraps.price}}$</span>
+                 <p class="card-text">{{scraps.name}}</span>
+                </div>
+              </div>
+            {%endfor%}
+            </div>
+         </div>
+<!-- ----------- product card ends here ------------------------------------------>
+
+<!--  footer ------------------------------------------------- -->
+  <div class="container-fluid w-100 text-center mt-5">
+    <footer
+            class="text-center text-lg-start text-white"
+            style="background-color:  #83a3db">
+      <!-- Grid container -->
+      <div class="container p-4 pb-0">
+        <!-- Section: Links -->
+        <section class="">
+          <!--Grid row-->
+          <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+              <h5 class="text-uppercase">SCRAP BOX</h5>
+  
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Molestiae modi cum ipsam ad, illo possimus laborum ut
+               
+              </p>
+            </div>
+            
+            <!--Grid column-->
+            <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+              <h5 class="text-uppercase">Links</h5>
+  
+              <ul class="list-unstyled mb-0">
+                <li>
+                  <a href="#!" class="text-white">Link 1</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white">Link 2</a>
+                </li>
+              </ul>
+            </div>
+            <!--Grid column-->
+          </div>
+          <!--Grid row-->
+        </section>
+        <!-- Section: Links -->
+  
+        <hr class="mb-4" />
+  
+        <!-- Section: Social media -->
+        <section class="mb-4 text-center">
+          <!-- Facebook -->
+          <a
+             class="btn btn-outline-light btn-floating m-1"
+             href="#!"
+             role="button"
+             ><i class="fab fa-facebook-f"></i
+            ></a>
+  
+          <!-- Twitter -->
+          <a
+             class="btn btn-outline-light btn-floating m-1"
+             href="#!"
+             role="button"
+             ><i class="fab fa-twitter"></i
+            ></a>
+  
+          <!-- Google -->
+          <a
+             class="btn btn-outline-light btn-floating m-1"
+             href="#!"
+             role="button"
+             ><i class="fab fa-google"></i
+            ></a>
+  
+          <!-- Instagram -->
+          <a
+             class="btn btn-outline-light btn-floating m-1"
+             href="#!"
+             role="button"
+             ><i class="fab fa-instagram"></i
+            ></a>
+  
+          <!-- Linkedin -->
+          <a
+             class="btn btn-outline-light btn-floating m-1"
+             href="#!"
+             role="button"
+             ><i class="fab fa-linkedin-in"></i
+            ></a>
+  
+          <!-- Github -->
+          <a
+             class="btn btn-outline-light btn-floating m-1"
+             href="#!"
+             role="button"
+             ><i class="fab fa-github"></i
+            ></a>
+        </section>
+        <!-- Section: Social media -->
+      </div>
+      <!-- Grid container -->
+  
+      <!-- Copyright -->
+      <div
+           class="text-center p-3"
+           style="background-color: rgba(0, 0, 0, 0.2)"
+           >
+        © 2020 Copyright:
+        <a class="text-white" href="https://mdbootstrap.com/"
+           >scrapbox.com</a
+          >
+      </div>
+    </footer>
+  </div>
+
+  </footer>
+
+
+</body>
+</html>
